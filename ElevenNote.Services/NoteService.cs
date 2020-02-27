@@ -10,13 +10,13 @@ namespace ElevenNote.Models
     public class NoteService
     {
         private readonly Guid _userId;
-        public NotService(Guid userId)
+        public NoteService(Guid userId)
         {
             _userId = userId;
         }
         public bool CreateNote(NoteCreate model)
         {
-            var entity = new NoteCreate()
+            var entity = new Note()
             {
                 OwnerId = _userId,
                 Title = model.Title,
@@ -45,6 +45,24 @@ namespace ElevenNote.Models
 
                         );
                 return query.ToArray();
+            }
+        }
+        public NoteDetail GetNoteById(int id)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var entity = ctx
+                    .Notes
+                    .Single(e => e.NoteId == id && e.OwnerId == _userId);
+                return
+                    new NoteDetail
+                    {
+                        NoteId = entity.NoteId,
+                        Title = entity.Title,
+                        Content = entity.Content,
+                        CreatedUtc = entity.CreatedUtc,
+                        ModifiedUtc = entity.ModifiedUtc,
+                    };
             }
         }
     }
