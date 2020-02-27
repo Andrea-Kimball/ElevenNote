@@ -35,7 +35,7 @@ namespace ElevenNote.Models
             {
                 var query = ctx
                     .Notes
-                    .Where(e => e.OwnerId == userId)
+                    .Where(e => e.OwnerId == _userId)
                     .Select(e => new NoteListItem
                     {
                         NoteId = e.NoteId,
@@ -48,3 +48,4 @@ namespace ElevenNote.Models
             }
         }
     }
+}
